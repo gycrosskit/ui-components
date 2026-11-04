@@ -3,7 +3,7 @@ plugins {
     kotlin("plugin.compose") version "2.2.21-1.0.0"
     id("com.android.application") version "8.10.1"
 }
-val uiComponentsVersion = providers.gradleProperty("uiComponentsVersion").orElse("0.1.0-rc.1").get()
+val uiComponentsVersion = providers.gradleProperty("uiComponentsVersion").orElse("1.0.0").get()
 val kuiklyRenderFrameworkDir = providers.gradleProperty("kuiklyRenderFrameworkDir").orNull
 kotlin {
     androidTarget { compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11) }

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = providers.environmentVariable("GROUP").orElse("com.github.gycrosskit.ui-components").get()
-version = providers.environmentVariable("VERSION").orElse("0.1.0-rc.1").get()
+version = providers.environmentVariable("VERSION").orElse("1.0.0").get()
 
 
 allprojects {
