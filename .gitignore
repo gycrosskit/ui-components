@@ -1,0 +1,14 @@
+.gradle/
+.kotlin/
+build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+
+.research/
+oh_modules/
+.hvigor/
+/scripts/ci-changes.py
+/scripts/ci-run.py
+/scripts/ci-native-cache.py
