@@ -1,0 +1,16 @@
+[versions]
+agp = "8.10.1"
+kotlin = "2.2.21-1.0.0"
+kuikly = "2.30.0-2.0.21-ohos"
+coroutines = "1.10.2-1.0.0"
+
+[libraries]
+kuikly-core = { module = "com.tencent.kuikly-open:core", version.ref = "kuikly" }
+kuikly-compose = { module = "com.tencent.kuikly-open:compose", version.ref = "kuikly" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
