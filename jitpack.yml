@@ -1,0 +1,4 @@
+jdk:
+  - openjdk21
+install:
+  - bash scripts/jitpack-install-prebuilt.sh ui-components
