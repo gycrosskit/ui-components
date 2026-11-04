@@ -17,7 +17,7 @@ flowchart LR
 
 ## 接入
 
-下一正式版本 `1.0.0` 待发布；下列坐标须在该版本公开并通过独立消费后使用。
+正式版本 [1.0.0](https://github.com/gycrosskit/ui-components/releases/tag/1.0.0) 已发布，公开产物核验与独立消费者编译已通过，可按下列固定坐标接入；宿主主题/窗口接线与设备表现仍须另验。
 
 ```kotlin
 repositories { maven("https://jitpack.io") }
