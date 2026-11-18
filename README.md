@@ -1,5 +1,7 @@
 # GY CrossKit UI Components
 
+新版 Maven 发布由 Jenkins 生成同版本归档、`source-receipt.json` 和 `SHA256SUMS`。JitPack 核对标签来源、归档尺寸和摘要后安装同一份制品。历史发布按原版本 Tag 复验。
+
 面向 Kuikly Compose 的公共控件与交互规则，保持既有 `com.dgtang.live.kuikly.core.ui`、`com.dgtang.live.core.ui` 包名。
 宿主提供主题、文案、品牌素材、窗口与键盘状态；组件不持有账号、路由或网络业务。
 
