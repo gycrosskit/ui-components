@@ -7,15 +7,7 @@
 
 ## 架构与调用流程
 
-```mermaid
-flowchart LR
-    Host[宿主主题和状态] --> UI[ui-components 公共控件]
-    UI --> Kuikly[Kuikly Compose 与原生 Renderer]
-    Host --> Renderer[宿主注册与生命周期]
-    Renderer --> Kuikly
-```
-
-宿主先提供 `ProvideKuiklyTheme`，控件消费当前主题和输入状态，事件回到宿主更新；Dialog 继承父 CompositionLocal，释放时恢复原生窗口策略。
+宿主用 `ProvideKuiklyTheme` 注入品牌主题和状态，控件通过 Kuikly Compose 渲染，事件回到宿主。Dialog 继承父 `CompositionLocal` 并在释放时恢复窗口策略。各平台补丁见[功能与平台差异](docs/功能与平台差异.md)，源码入口见 [AOCI 索引](aoci.txt)。
 
 ## 接入
 
