@@ -1,0 +1,103 @@
+#AOCI-CODE-VOLUME: 1
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/===
+.gitattributes[FC3T]: F:统一文本检出行尾为 LF，以维持 AOCI 的跨平台原始字节基线 | R:- | A:- | S:-
+.gitignore[FC3T]: F:排除构建缓存、IDE 文件、本地 CI 脚本副本和本机 MCP 配置 | R:- | A:- | S:-
+AGENTS.md[SG6S]: F:定义控件兼容、项目验证与 AOCI 完整认知维护规则 | R:code:README.md,code:docs/开发与验证.md | A:aoci_rules,aoci_overview,aoci_maintain | S:-
+LICENSE[SS2M]: F:保存公共控件分发使用的 Apache 2.0 许可 | R:- | A:- | S:-
+README.md[SG6T]: F:说明 Kuikly 公共控件定位、主题注入、三端接线和正式 Maven 坐标 | R:code:docs/功能与平台差异.md,code:docs/开发与验证.md | A:ProvideKuiklyTheme,AppText | S:保持既有包名，宿主统一选择 Kuikly 与 Renderer
+build.gradle.kts[FV4T]: F:通过版本目录声明插件，并为 Maven POM 写入统一坐标与许可 | R:code:gradle/libs.versions.toml,code:ui-components/build.gradle.kts | A:GROUP,VERSION | S:-
+gradle.properties[FV3T]: F:设置 Gradle JVM、AndroidX 与非传递 R 类选项 | R:- | A:- | S:-
+gradlew[XV3S]: F:在 POSIX 系统解析启动环境并执行 Gradle Wrapper | R:code:gradle/wrapper/gradle-wrapper.properties | A:- | S:-
+gradlew.bat[XV3T]: F:在 Windows 解析 Java 路径并启动 Gradle Wrapper | R:code:gradle/wrapper/gradle-wrapper.properties | A:- | S:-
+jitpack.yml[FV4T]: F:为 JitPack 指定 JDK 21 与预构建 Maven 安装入口 | R:code:scripts/jitpack-install-prebuilt.sh | A:- | S:-
+settings.gradle.kts[FV5T]: F:配置 Gradle 插件和库镜像并载入单一 ui-components 模块 | R:code:build.gradle.kts,code:ui-components/build.gradle.kts | A:- | S:Kuikly 组独占腾讯 Maven 仓库，避免镜像返回不完整变体
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/docs/===
+功能与平台差异.md[SU5T]: F:界定文本、图片、Dialog、交互控件的平台补丁及宿主责任 | R:code:README.md | A:- | S:品牌素材、窗口与键盘状态由宿主注入
+开发与验证.md[SV5T]: F:记录本组件编译、测试、打包和精确消费的入口与证据 | R:code:scripts/build.sh,code:scripts/check-public-maven.py | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/gradle/===
+libs.versions.toml[FV5T]: F:集中声明 KMP、Compose 编译器、Kuikly core/compose 和协程的编译基线 | R:code:build.gradle.kts,code:ui-components/build.gradle.kts | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/gradle/wrapper/===
+gradle-wrapper.properties[FV3T]: F:固定 Gradle Wrapper 分发、下载策略和缓存位置 | R:code:gradlew,code:gradlew.bat | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/scripts/===
+archive-prebuilt.sh[OV7T]: F:发布全部 Maven 变体到专用 staging，修正元数据后核验并归档 | R:code:scripts/check-maven.py,code:scripts/jitpack-metadata.py,code:scripts/build.sh | A:VERSION | S:脚本清空独占 build/maven，不应指向共享目录
+build.sh[OV6T]: F:分派 Android、iOS 和 Harmony 生产编译，以及 Maven 打包 | R:code:scripts/archive-prebuilt.sh,code:scripts/ci-repositories.gradle | A:compile,package | S:-
+check-maven.py[TV6S]: F:本地检查 Maven variant、JVM 文件与归档元数据、摘要的真实性 | R:code:scripts/archive-prebuilt.sh | A:check_sidecars,check_jvm_bytecode | S:-
+check-public-maven.py[TV6M]: F:根据精确版本和提交验证公开 Maven 版本元数据与制品字节 | R:code:scripts/check-maven.py,code:docs/开发与验证.md | A:ready_state,audit | S:按完整 SHA 判定来源，公开制品核验与独立消费者编译分别记录
+ci-java.security[FV3T]: F:为验证进程配置 3600 秒正向 DNS 缓存，禁用负向缓存 | R:code:scripts/ci-repositories.gradle | A:- | S:-
+ci-repositories.gradle[FV5T]: F:配置验证用 Gradle build cache、行为测试重跑、DNS 预热与镜像过滤 | R:code:scripts/build.sh,code:settings.gradle.kts | A:GYC_CI_BUILD_CACHE | S:预热失败仍继续真实解析；测试输出不当作缓存命中
+jitpack-install-prebuilt.sh[OV8T]: F:仅安装与当前 Tag、源树和构建收据匹配的冻结 Maven 归档 | R:code:jitpack.yml,code:tests/test_jitpack_install.py | A:source-receipt.json,SHA256SUMS | S:核对大小和 SHA256；只接收边界内的普通文件与目录，通过路径检查后才解包
+jitpack-metadata.py[XV6T]: F:移除 JitPack 无法保留 classifier 的元数据与空资源变体，更新摘要 | R:code:scripts/archive-prebuilt.sh | A:normalize | S:先验证所有资源；非空资源失败时不留下部分修改
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/tests/===
+test_jitpack_install.py[TV5S]: F:验证预构建安装对来源、摘要、归档路径和正常制品的处理 | R:code:scripts/jitpack-install-prebuilt.sh | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/===
+build.gradle.kts[FV7T]: F:配置 Kuikly Compose KMP 的四个 Native 目标、Android Release 和 Maven staging | R:code:gradle/libs.versions.toml,code:build.gradle.kts | A:- | S:使用 prefer 声明 Kuikly 编译基线，宿主最终选择兼容版本
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/androidUnitTest/kotlin/com/dgtang/live/kuikly/core/ui/===
+EmptyApplier.kt[TU3T]: F:为 Compose 单元测试提供无渲染树副作用的 Unit Applier | R:- | A:- | S:-
+KeyboardDismissTest.kt[TU5S]: F:验证覆盖层只从父 Composition 收键盘一次，并验证页面退出的清理时机 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/KeyboardDismiss.kt | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/androidUnitTest/kotlin/com/dgtang/live/kuikly/core/ui/component/===
+DraggableFloatingButtonTest.kt[TU5M]: F:验证浮动按钮拖动边界、吸附、取消、布局重算以及随后点击的独立性 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/DraggableFloatingButton.kt | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/commonMain/kotlin/com/dgtang/live/core/ui/===
+ClickDebounceGate.kt[CU7T]: F:以每控件的单调时钟闸门拦截连续点击 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/AppClick.kt | A:ClickDebounceGate.tryAcquire,APP_CLICK_INTERVAL_MILLIS | S:拦截的点击也会延长静默期，默认500ms
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/===
+AnnotatedText.kt[IU6T]: F:给 AnnotatedString 添加底层字距 Span 并保留原有链接与样式 | R:- | A:withSpanLetterSpacing | S:Kuikly 2.28 Android 继承字距被当作 em，须用显式 Span 校正
+AppButtons.kt[AU6S]: F:为通用 Material 按钮提供品牌颜色、字样及去重点击 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/KuiklyTheme.kt,code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/AppClick.kt | A:AppButton,AppTextButton,AppOutlinedButton,AppIconButton | S:Material 会覆盖根文字样式，内容作用域恢复品牌排版
+AppClick.kt[AU7T]: F:组合 per-control 点按和离散变更门禁，保持回调跟随重组 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/core/ui/ClickDebounceGate.kt | A:rememberAppClick,rememberAppChange,appClickable | S:使用最新回调，不因回调变化而重置闸门
+AppFontScale.kt[CU5T]: F:读取合法系统文字缩放档位并把上限限制为1.75 | R:- | A:appFontScale,MAX_APP_FONT_SCALE | S:非法、非正或非有限值回到1
+KeyboardDismiss.kt[AU7T]: F:在空白点击、覆盖层进入或路由离开时关闭原生输入 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppDialog.kt | A:DismissKeyboardOnEnter,DismissKeyboardOnLeave,rememberDismissKeyboard | S:先 hide 后清焦；覆盖层一旦放行不因自身键盘再隐藏
+KuiklyTheme.kt[CU8T]: F:通过 CompositionLocal 注入宿主品牌色、排版和默认内容样式 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppDialog.kt,code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/AppButtons.kt | A:KuiklyAppColors,KuiklyTheme,ProvideKuiklyTheme | S:根未提供主题时会失败；Dialog 独立 Composition 需传递父上下文
+WindowEnvironment.kt[IU6T]: F:定义应用键盘快照和弹窗系统栏策略的注入接口 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppDialog.kt | A:LocalKeyboardHeight,LocalAppDialogSystemBars | S:宿主维护单一键盘订阅；栏策略回调返回本弹层的恢复操作
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/===
+AppBasicTextField.kt[AU6T]: F:给受控输入统一应用平台字号补偿及原生密码眼睛可见策略 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/KuiklyTheme.kt | A:AppBasicTextField | S:通过 skillcurePasswordIconVisible 传给原生 receiver，外观由 decorationBox 决定
+AppCheckbox.kt[AU4T]: F:提供受控 Checkbox 与品牌选择、禁用配色 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/KuiklyTheme.kt | A:AppCheckbox,appCheckboxColors | S:整行已处理点击时将回调传 null
+AppContentState.kt[AU6S]: F:渲染居中的加载、消息和可选操作，按约束容纳文字和按钮 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/AppButtons.kt | A:AppContentLoading,AppContentMessage,AppLoadingIndicator | S:仅高度有界时使用内层纵向列表，无界列表项由外层负责滚动
+AppDialog.kt[AU8S]: F:承载独立 Compose 弹窗、业务操作及键盘和安全区计算 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/KeyboardDismiss.kt,code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/WindowEnvironment.kt,code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/KuiklyTheme.kt | A:AppThemeDialog,AppDialog | S:父 Composition 清输入；手工消费当前窗口安全区和键盘，避免重复 Insets
+AppImage.kt[IU7S]: F:统一 asset、Painter、URL 和字节图片显示，复用原生 Kuikly loader | R:- | A:AppImage,AppAssetImage,rememberAppImagePainter | S:OHOS SrcIn 改用矩阵避免 Renderer 清 filter 时擦掉 tint；缩略图优先于原始字节
+AppLabel.kt[IU5T]: F:将带背景或描边的文字标签拆为宿主容器和文字测量 | R:- | A:AppLabel | S:Kuikly 原生节点可能写回外框位置，用独立 Box 避免丢文字 padding
+AppLazyLayouts.kt[AU5T]: F:封装保留调用方 LazyListState 的公共列表和可选下拉刷新 | R:- | A:AppLazyColumn | S:-
+AppOutlinedTextField.kt[IU7M]: F:提供透明描边的受控 Outlined 文本框，布局 label、placeholder 和 supporting slots | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppBasicTextField.kt,code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppText.kt | A:AppOutlinedTextField | S:避免 2.28 Outlined 路由到 Filled；用 Canvas 描边与独立 minLines 测量绕过旧 Renderer 限制
+AppRefresh.kt[IU6S]: F:按平台渲染 iOS Cupertino 和 Material 下拉/加载指示器 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppRefreshStaggeredGrid.kt,code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppLazyLayouts.kt | A:AppRefreshIndicator,CupertinoRefreshIndicator | S:保留箭头路径的16dp布局，32dp原生 frame 容纳旋转和描边
+AppRefreshStaggeredGrid.kt[AU8S]: F:接入交错网格的原生拖拽与滚动观察，按当前 owner 管理刷新 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppRefresh.kt,code:ui-components/src/commonTest/kotlin/com/dgtang/live/kuikly/core/ui/component/AppRefreshStaggeredGridTest.kt | A:AppRefreshStaggeredGrid,StaggeredRefreshSession | S:拒绝旧 owner 回调；同一帧结束的刷新可没有可观察的 true 状态
+AppRefreshableEmptyContent.kt[AU5T]: F:让空态使用实际 LazyListState 并共享下拉刷新入口 | R:- | A:AppRefreshableEmptyContent | S:保持空态使用同一列表位置，才能判断是否已到顶部
+AppSelectionChipGroup.kt[AU5T]: F:渲染可换行、可禁用的单选标签并转发受控选择 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/AppClick.kt,code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/KuiklyTheme.kt | A:AppSelectionChipGroup | S:每项保留 RadioButton 和 selected 无障碍语义
+AppSyncedHorizontalPager.kt[AU8T]: F:从外部选中项同步分页，待页稳定后将手势选择回传 | R:code:ui-components/src/commonTest/kotlin/com/dgtang/live/kuikly/core/ui/component/AppSyncedHorizontalPagerTest.kt | A:AppSyncedHorizontalPager,syncPagerSelection | S:先原生 stop 再重新动画；Kuikly 同页零偏移跳过，使用亚像素偏移重发
+AppText.kt[IU8S]: F:统一普通文本、富文本及编辑输入的平台字体补偿 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/AnnotatedText.kt,code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppBasicTextField.kt | A:AppText,AppRichText,forNativeText | S:仅 iOS 对指定 SP 单位应用缩放，Android/OHOS 已由原生处理；富文本保留链接和标注
+DraggableFloatingButton.kt[AU7T]: F:实现按归一化位置恢复的浮动按钮、拖动约束和结束吸附 | R:- | A:DraggableFloatingButton,FloatingButtonBounds,detectFloatingButtonDrag | S:尺寸变化时取消旧手势并恢复已保存边缘，未结束的拖动不提交
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/layout/===
+AdaptiveLayout.kt[CU4T]: F:以1.3字体缩放阈值决定使用大字布局 | R:- | A:requiresExpandedTextLayout | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/commonTest/kotlin/com/dgtang/live/core/ui/===
+ClickDebounceGateTest.kt[TU4T]: F:验证单控件静默期、连续点击拒绝及控件间隔离 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/core/ui/ClickDebounceGate.kt | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/commonTest/kotlin/com/dgtang/live/kuikly/core/ui/===
+AnnotatedTextTest.kt[TU4T]: F:验证显式字距 Span 覆盖文字及链接并保留既有局部覆盖 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/AnnotatedText.kt | A:- | S:-
+AppBasicTextFieldTest.kt[TU5T]: F:验证原生 SP 无二次缩放，以及 iOS 相对单位、链接和内联标注保留 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppText.kt | A:- | S:-
+AppFontScaleTest.kt[TU4T]: F:检查系统缩放档位、非法值回退和默认字重族不变 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/AppFontScale.kt | A:- | S:-
+ImageTintTest.kt[TU4T]: F:验证 OHOS 着色矩阵替换 RGB 且保留源透明度 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppImage.kt | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/ui-components/src/commonTest/kotlin/com/dgtang/live/kuikly/core/ui/component/===
+AppRefreshStaggeredGridTest.kt[TU5T]: F:验证交错网格刷新阈值、外部刷新、结束重入及旧 owner 回调保护 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppRefreshStaggeredGrid.kt | A:- | S:-
+AppSyncedHorizontalPagerTest.kt[TU5S]: F:验证外部选中、手势接管、旧原生动画停止及协程退出时序 | R:code:ui-components/src/commonMain/kotlin/com/dgtang/live/kuikly/core/ui/component/AppSyncedHorizontalPager.kt | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/verification-consumer/===
+build.gradle.kts[TV7T]: F:构建精确版本的独立三端消费者并核对 Android 依赖树 | R:code:ui-components/build.gradle.kts,code:docs/开发与验证.md | A:verifyNoCmpUi,uiComponentsVersion,kuiklyRenderFrameworkDir | S:必须先解析全依赖，再拒绝 JetBrains/AndroidX 第二套 Compose UI
+gradle.properties[FV3T]: F:设置独立消费者的 AndroidX、Kotlin Native 和 Gradle JVM 参数 | R:code:verification-consumer/build.gradle.kts | A:- | S:-
+settings.gradle.kts[FV6T]: F:把消费验证坐标定向到公开 JitPack 或显式候选仓库 | R:code:verification-consumer/build.gradle.kts | A:remoteOnly,uiComponentsMavenRepo | S:remoteOnly 固定 JitPack，不能被候选仓库覆盖
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/verification-consumer/src/androidMain/===
+AndroidManifest.xml[FV2T]: F:声明独立 Android 消费验证应用的标签 | R:code:verification-consumer/build.gradle.kts | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-ui-components/ui-components/verification-consumer/src/commonMain/kotlin/===
+Probe.kt[TU6T]: F:在 Maven 独立消费者编译主题、文本、输入、图片、分页、弹窗和点击 API | R:code:verification-consumer/build.gradle.kts | A:ComponentProbe,fontAndClickProbe | S:只从 Maven 解析组件；主题与输入状态由消费者提供
